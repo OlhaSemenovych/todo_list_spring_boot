@@ -23,7 +23,9 @@ public class NoteService {
     }
 
     public Note add(Note note) {
-        notes.put(note.getId(), note);
+        if (!notes.containsKey(note.getId())) {
+            notes.put(note.getId(), note);
+        }
         return note;
     }
 
@@ -45,7 +47,6 @@ public class NoteService {
                 .orElseThrow(() -> new NoSuchElementException(
                         String.format("Can't update note. Note with id - %s doesn't exist!", note.getId())));
     }
-
 
     public Note getById(long id) {
         return Optional.ofNullable(notes.get(id))
