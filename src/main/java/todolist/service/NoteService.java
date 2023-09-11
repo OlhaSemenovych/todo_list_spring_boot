@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import todolist.dto.Note;
 import todolist.repository.NoteRepository;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.List;
 
@@ -30,8 +31,11 @@ public class NoteService {
         noteRepository.save(note);
     }
 
-    public Optional<Note> getById(long id) {
-        return noteRepository.findById(id);
+    public Note getById(long id) {
+        return Optional.of(noteRepository.findById(id))
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .orElseThrow(NoSuchElementException::new);
     }
 
 }

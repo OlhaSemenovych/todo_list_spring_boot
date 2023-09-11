@@ -7,8 +7,6 @@ import org.springframework.web.servlet.ModelAndView;
 import todolist.dto.Note;
 import todolist.service.NoteService;
 
-import java.util.Optional;
-
 @Controller
 @RequiredArgsConstructor
 public class NoteController {
@@ -32,13 +30,8 @@ public class NoteController {
     @GetMapping("/edit")
     public ModelAndView edit(@RequestParam("id") Long id) {
         ModelAndView modelAndView = new ModelAndView("edit");
-        Optional<Note> noteWithId = noteService.getById(id);
-        Optional.ofNullable(noteService.getById(id))
-                .map(n -> {
-                    Note noteNew = noteWithId.get();
-                    modelAndView.addObject("note", noteNew);
-                    return noteNew;
-                });
+        Note note = noteService.getById(id);
+        modelAndView.addObject("note", note);
         return modelAndView;
     }
 
