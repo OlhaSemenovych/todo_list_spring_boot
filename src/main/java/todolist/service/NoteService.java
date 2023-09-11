@@ -1,57 +1,37 @@
 package todolist.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import todolist.dto.Note;
+import todolist.repository.NoteRepository;
 
 import java.util.Optional;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
+@RequiredArgsConstructor
 public class NoteService {
 
-    private final Map<Long, Note> notes;
-
-    public NoteService() {
-        notes = new HashMap<>();
-    }
+    private final NoteRepository noteRepository;
 
     public List<Note> listAll() {
-        return notes.values().stream().toList();
+        return noteRepository.findAll();
     }
 
     public Note add(Note note) {
-        if (!notes.containsKey(note.getId())) {
-            notes.put(note.getId(), note);
-        }
-        return note;
+        return noteRepository.save(note);
     }
 
     public void deleteById(long id) {
-        Optional.ofNullable(notes.get(id))
-                .map(n -> notes.remove(id))
-                .orElseThrow(() -> new NoSuchElementException(
-                        String.format("Can't delete note. Note with id - %s doesn't exist!", id)));
+        noteRepository.deleteById(id);
     }
 
     public void update(Note note) {
-        Optional.ofNullable(notes.get(note.getId()))
-                .map(n -> {
-                    Note noteNew = notes.get(note.getId());
-                    noteNew.setContent(note.getContent());
-                    noteNew.setTitle(note.getTitle());
-                    return noteNew;
-                })
-                .orElseThrow(() -> new NoSuchElementException(
-                        String.format("Can't update note. Note with id - %s doesn't exist!", note.getId())));
+        noteRepository.save(note);
     }
 
-    public Note getById(long id) {
-        return Optional.ofNullable(notes.get(id))
-                .orElseThrow(() -> new NoSuchElementException(
-                        String.format("Can't get note. Note with id - %s doesn't exist!", id)));
+    public Optional<Note> getById(long id) {
+        return noteRepository.findById(id);
     }
 
 }

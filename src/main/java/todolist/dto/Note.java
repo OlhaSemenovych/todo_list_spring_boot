@@ -1,22 +1,24 @@
 package todolist.dto;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.concurrent.atomic.AtomicInteger;
-
 @Getter
 @Setter
 @ToString
+@Entity
+@Table(name = "note")
 public class Note {
 
-    /*
-    Please disregard ID creating, this is a temporary functionality.
-    AtomicInteger value will be removed after database setup with autoincrement ID column.
-     */
-    private static final AtomicInteger autoId = new AtomicInteger(0);
-    private Long id = Long.valueOf(String.valueOf(autoId.getAndIncrement()));
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String title;
     private String content;
 
