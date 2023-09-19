@@ -6,4 +6,5 @@ import todolist.dto.Note;
 
 @Repository
 public interface NoteRepository extends JpaRepository<Note, Long> {
+
 }

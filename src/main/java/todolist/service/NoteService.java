@@ -6,7 +6,6 @@ import todolist.dto.Note;
 import todolist.repository.NoteRepository;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import java.util.List;
 
 @Service
@@ -32,10 +31,7 @@ public class NoteService {
     }
 
     public Note getById(long id) {
-        return Optional.of(noteRepository.findById(id))
-                .filter(Optional::isPresent)
-                .map(Optional::get)
-                .orElseThrow(NoSuchElementException::new);
+        return noteRepository.findById(id).orElseThrow(NoSuchElementException::new);
     }
 
 }
